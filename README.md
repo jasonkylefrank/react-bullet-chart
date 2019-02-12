@@ -1,5 +1,5 @@
 Background & purpose
-----------
+====================
 I created this bullet chart when our design called for a custom bullet chart component which was not available in off-the-shelf solutions.
 
 We needed a bullet chart component which could accept multiple target values, multiple “primary” performance values, a “range” value, and multiple “secondary” performance values.  
@@ -11,5 +11,5 @@ Additionally, if there were multiple “primary” or “secondary” values, th
 This component solves all of those problems.
 
 React dependency note
-=====================
+---------------------
 This component was originally built for React **v15.x**.
