@@ -1,0 +1,233 @@
+@import './MaterialDesignColors.scss';
+
+// Just some arbitrary height so stuff shows up. 
+//  Outside controls can pass-in a class to set their own height (everything else inside this control will
+//  scale vertically as well as horizontally as overall height or width are changed).
+$allBucketsHeightPixels: 24; // Space includes everything except the 0 and scale labels
+$positiveAndNegativeBucketHeightPercent: 88%; // The percent compared to the zero-bucket (which is full-height)
+
+$zeroLabelHeightPixels: 16;
+$scaleLabelHeightPixels: 14;
+
+.root {
+    // This is emulating layout space that the scale label takes up
+    //  (the scale label is positioned absolutely so it doesn't take up layout space)
+    padding-top: #{$scaleLabelHeightPixels}px;
+    // This is emulating layout space that the 0 label takes up
+    //  (the 0 label is positioned absolutely so it doesn't take up layout space)
+    padding-bottom: #{$zeroLabelHeightPixels}px;
+}
+
+.allBuckets {
+    display: flex;
+    align-items: center;
+    height: #{$allBucketsHeightPixels}px;
+}
+
+/*#region --- Bucket Types --- */
+%bucket {
+    position: relative;
+    transform: scaleX(1);
+    transition: .5s transform ease;
+}
+
+@mixin preRevealTransform() {
+    transition: 0s transform;
+    transform: scaleX(0);
+}
+
+.negativeBucket {
+    @extend %bucket;
+    height: $positiveAndNegativeBucketHeightPercent;
+    transform-origin: right;
+
+    &.preReveal {
+        @include preRevealTransform();
+    }
+}
+
+.zeroBucket {
+    @extend %bucket;
+    background-color: #222;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    &.preReveal {
+        @include preRevealTransform();
+    }
+    &.isHidden {
+        width: 0;
+        opacity: 0;
+    }
+    &.useDarkTheme {
+        background-color: #FAFAFA;
+    }
+}
+
+.zeroLabel {
+    position: absolute;
+    height: #{$zeroLabelHeightPixels}px;
+    bottom: -#{$zeroLabelHeightPixels - 2}px;
+    left: -2px;
+    font-size: 1.1rem;
+
+    &.useDarkTheme {
+        color: white;
+    }
+}
+
+.positiveBucket {
+    @extend %bucket;
+    height: $positiveAndNegativeBucketHeightPercent;
+    transform-origin: left;
+
+    &.preReveal {
+        @include preRevealTransform();
+    }
+}
+/*#endregion -- end bucket types -- */
+
+/*#region --- Individual value types --- */
+%valueItem {
+    position: absolute;
+    transition: .3s all ease;
+}
+
+.negative {
+    @extend %valueItem;
+}
+
+.zero {
+    @extend %valueItem;
+}
+
+.positive {
+    @extend %valueItem;
+}
+
+%unfocused {
+    opacity: .2;
+}
+
+// --- The primary value type (e.g., Costs & Commitments)
+$valHeight: 28%;
+$valTop: 28%;
+%val {
+    height: $valHeight;
+    top: $valTop;
+
+    &.focused {
+    }
+
+    &.unfocused {
+        @extend %unfocused;
+    }
+}
+.val1 {
+    @extend %val;
+    background-color: getMaterialDesignColor('Green', '800');
+}
+
+.val2 {
+    @extend %val;
+    background-color: getMaterialDesignColor('Green', '400');
+}
+.val3 {
+    @extend %val;
+    background-color: getMaterialDesignColor('Blue', '100');
+}
+
+// --- The secondary value type (i.e., for thin bar). E.g., Carryover & new funding.
+%secondaryVal {
+    height: 8%;
+    bottom: 0;
+
+    &.focused {
+    }
+
+    &.unfocused {
+        @extend %unfocused;
+    }
+}
+.secondaryVal1 {
+    @extend %secondaryVal;
+    background-color: getMaterialDesignColor('Deep Orange', '500');
+}
+
+.secondaryVal2 {
+    @extend %secondaryVal;
+    background-color: getMaterialDesignColor('Orange', '500');
+}
+.secondaryVal3 {
+    @extend %secondaryVal;
+    background-color: #999;
+}
+
+// --- Targets
+%target {
+    height: $valHeight * 2;
+    // Assumes that the postive and negative buckets' height are already less than the zero bucket's height
+    top: 14%;
+    
+    &.focused {
+    }
+
+    &.unfocused {
+        @extend %unfocused;
+    }
+}
+
+.primaryTarget {
+    @extend %target;
+    width: 2px;
+    background-color: getMaterialDesignColor('Grey', '700');
+}
+
+.secondaryTarget {
+    @extend %target;
+    width: 1px;
+    background-color: getMaterialDesignColor('Grey', '800');
+}
+
+// --- Scale (right now we only have one background-shading scale)
+.scale {
+    height: 84%;
+    top: 0;
+    background-color: getMaterialDesignColor('Grey', '250');
+    
+    &.focused {
+    }
+
+    &.unfocused {
+        @extend %unfocused;
+    }
+}
+
+.scaleLabel {
+    display: block;
+    position: relative;
+    height: #{$scaleLabelHeightPixels}px;
+    top: calc(-#{$scaleLabelHeightPixels}px - #{100% - $positiveAndNegativeBucketHeightPercent});
+    text-align: right; // for positive
+
+    font-size: 1.1rem;
+
+    &.negative, &.zero {
+        text-align: left;
+    }
+
+    &.zero {
+        top: -#{$zeroLabelHeightPixels}px;
+    }
+    &.useDarkTheme {
+        color:rgba(255, 255, 255, .54);// #CFD8DC;
+    }
+    &:not(.useDarkTheme){
+        color:rgba(0, 0, 0, .54);// #CFD8DC;
+    }
+    &.negative {
+        color: getMaterialDesignColor('Red', '600');
+    }
+}
+/*#endregion */

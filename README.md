@@ -9,3 +9,7 @@ Furthermore, the component needed to accept any numerical value as input, whethe
 Additionally, if there were multiple “primary” or “secondary” values, their respective graphical bars would retain their proper “stacking order” even as their values varied between positive and negative. 
 
 This component solves all of those problems.
+
+React dependency note
+=====================
+This component was originally built for React **v15.x**.
