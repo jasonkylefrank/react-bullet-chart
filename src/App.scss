@@ -1,3 +1,7 @@
+// Some test variables to confirm Sass is working
+$link-color: #61dafb;
+//$link-color: red;
+
 .App {
   text-align: center;
 }
@@ -20,7 +24,7 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: $link-color;
 }
 
 @keyframes App-logo-spin {
